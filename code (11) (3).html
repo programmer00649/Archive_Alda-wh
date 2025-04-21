@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>المكتبة الصوتية الدعوية</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* --- CSS Styles (نفس الأنماط السابقة بدون تغيير) --- */
+    :root {
+      --primary-color: #1e3d59;
+      --secondary-color: #17b794;
+      --accent-color: #f5b461;
+      --text-color: #2d4356;
+      --text-color-light: #526d82;
+      --background-color: #f5f5f7;
+      --card-background: #ffffff;
+      --border-color: #e8e8e8;
+      --border-color-light: #f0f0f0;
+      --placeholder-color: #bbb;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      --card-shadow-hover: 0 10px 30px rgba(0,0,0,0.1);
+      --header-gradient: linear-gradient(135deg, #1e3d59 0%, #102436 100%);
+      --player-gradient: linear-gradient(90deg, #1e3d59, #152f45);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Tajawal", "Arial", sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 0; direction: rtl; text-align: right; font-size: 16px; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    header { background: var(--header-gradient); color: white; padding: 2.5rem 1.5rem; box-shadow: 0 5px 25px rgba(0,0,0,0.2); position: relative; }
+    .logo.logo-option-2 { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto 2rem; max-width: 800px; padding: 0 1rem; animation: fadeIn 0.9s ease-out; }
+    .logo.logo-option-2 i { font-size: 4rem; color: var(--accent-color); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); margin-bottom: 0.8rem; }
+    .logo.logo-option-2 h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: 0.5px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); margin: 0 0 0.5rem 0; line-height: 1.3; color: white; }
+    .logo.logo-option-2 .tagline { font-size: 1rem; font-weight: 400; color: rgba(255, 255, 255, 0.85); margin: 0; padding: 0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); }
+    .search-section { max-width: 800px; margin: 0 auto; }
+    .search-bar { position: relative; margin-bottom: 1rem; }
+    .search-bar i { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 1rem; pointer-events: none; }
+    .search-bar input { width: 100%; padding: 0.8rem 3rem 0.8rem 1rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 1rem; background: rgba(255,255,255,0.1); color: white; transition: var(--transition); }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar input:focus { outline: none; border-color: var(--accent-color); background: rgba(255,255,255,0.15); box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .filters { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0.5rem 0; margin: 1rem auto 0; justify-content: center; }
+    .filters select { appearance: none; background: rgba(255,255,255,0.15); color: white; padding: 0.7rem 2.5rem 0.7rem 1rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease-in-out; position: relative; min-width: 150px; text-align: right; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 0.7rem center; background-size: 1rem; }
+    .filters select:hover { background-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+    .filters select:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .filters select option { background-color: var(--primary-color); color: white; }
+    .categories { padding: 1rem 1.5rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; background-color: var(--card-background); box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color-light); }
+    .category-btn { padding: 0.8rem 1.4rem; border: 1px solid var(--border-color); border-radius: 25px; background-color: var(--card-background); font-weight: 500; letter-spacing: 0.5px; color: var(--text-color); cursor: pointer; transition: all 0.2s ease-in-out; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .category-btn i { color: var(--secondary-color); font-size: 0.9em; }
+    .category-btn:hover { background-color: #f5f5f5; border-color: #ccc; transform: translateY(-2px); }
+    .category-btn.active { background-color: var(--secondary-color); color: white; border-color: var(--secondary-color); box-shadow: 0 2px 5px rgba(42, 157, 143, 0.3); transform: translateY(-1px); }
+    .category-btn.active i { color: white; }
+    .category-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    main { padding: 0 1.5rem; }
+    .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0; }
+    #loading.skeleton-active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0; }
+    .skeleton-card { background-color: var(--card-background); border-radius: 12px; padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); position: relative; overflow: hidden; }
+    .skeleton-line { background: linear-gradient(to right, var(--placeholder-color) 8%, #dddddd 18%, var(--placeholder-color) 33%); background-size: 1000px 100%; animation: shimmer 1.5s infinite linear; height: 1.2em; border-radius: 4px; margin-bottom: 0.8em; }
+    .skeleton-line.title { height: 1.5em; width: 70%; margin-bottom: 1.5em; }
+    .skeleton-line.short { width: 50%; }
+    .skeleton-line.meta { height: 1em; width: 60%; margin-bottom: 0.6em; }
+    .skeleton-line.button { height: 40px; width: 48%; display: inline-block; margin-top: 1.5em; margin-left: 4%; }
+    .skeleton-line.button:first-child { margin-left: 0; }
+    .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-color-light); grid-column: 1 / -1; }
+    .empty-state i { font-size: 3rem; margin-bottom: 1rem; color: var(--placeholder-color); }
+    .empty-state p { font-size: 1.1rem; }
+    .card { background: var(--card-background); border-radius: 16px; padding: 1.8rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); backdrop-filter: blur(10px); position: relative; display: flex; flex-direction: column; gap: 0.8rem; opacity: 0; transform: translateY(15px); overflow: hidden; border-right: 5px solid transparent; transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+    .card.category-خطب { border-right-color: #3498DB; }
+    .card.category-محاضرات { border-right-color: #2ECC71; }
+    .card.category-تلاوات { border-right-color: #F39C12; }
+    .card.category-دروس { border-right-color: #9B59B6; }
+    .card.category-أدعية { border-right-color: #e74c3c; }
+    .card.category- { border-right-color: #bdc3c7; }
+    .card h2 { margin: 0 0 0.8rem; font-size: 1.2rem; color: var(--primary-color); line-height: 1.45; font-weight: 700; }
+    .card .card-meta { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1rem; }
+    .card p { display: flex; align-items: center; gap: 0.6rem; color: var(--text-color-light); margin: 0; font-size: 0.9rem; }
+    .card p i { color: var(--secondary-color); font-size: 1rem; width: 1.3em; text-align: center; flex-shrink: 0; }
+    .card p i.fa-clock { color: #e74c3c; }
+    .card p i.fa-user-tie { color: #8e44ad; }
+    .audio-controls { display: flex; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color-light); }
+    .play-btn, .download-btn { flex: 1; padding: 0.8rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease-in-out; display: flex; align-items: center; justify-content: center; gap: 0.6rem; font-size: 0.95rem; text-decoration: none; }
+    .play-btn i, .download-btn i { font-size: 1em; }
+    .play-btn { background-color: var(--primary-color); color: white; }
+    .play-btn:hover { background-color: #1a3f5c; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(35, 78, 112, 0.2); }
+    .play-btn:disabled { background-color: #a0b4c2; cursor: not-allowed; transform: none; box-shadow: none; }
+    .download-btn { background-color: var(--primary-color); color: white; border: none; }
+    .download-btn:hover { background-color: #1a3f5c; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(35, 78, 112, 0.2); }
+    .download-btn.disabled { background-color: #a0b4c2; cursor: not-allowed; transform: none; box-shadow: none; color: #777 } /* Adjusted disabled download style */
+    .card.is-playing { border-color: var(--accent-color); box-shadow: 0 6px 20px rgba(251, 176, 59, 0.3); }
+    .card.is-playing .play-btn { background-color: var(--secondary-color); }
+    .play-btn:focus, .download-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    #audio-player-container { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-gradient); color: white; padding: 0.6rem 1rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 1000; backdrop-filter: blur(5px); height: 75px; display: flex; align-items: center; transition: transform 0.4s ease-out; transform: translateY(100%); }
+    #audio-player-container:not(.hidden) { transform: translateY(0); }
+    .player-content { display: flex; align-items: center; gap: 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .player-info { min-width: 150px; flex-shrink: 1; overflow: hidden; text-align: right; }
+    .player-info h3 { font-size: 0.95rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+    .player-info p { font-size: 0.75rem; margin: 2px 0 0; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.8); }
+    .player-controls { flex: 2; display: flex; align-items: center; gap: 1rem; }
+    .progress-wrapper { flex-grow: 1; position: relative; padding: 10px 0; }
+    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; cursor: pointer; position: relative; }
+    #progress-bar { height: 100%; background: var(--accent-color); border-radius: 3px; width: 0; transition: width 0.1s linear; position: relative; }
+    #progress-bar::after { content: ''; position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 14px; height: 14px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s ease; }
+    .progress-container:hover #progress-bar::after { opacity: 1; }
+    #current-time, #duration { position: absolute; top: -5px; font-size: 0.75rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.2); padding: 1px 4px; border-radius: 3px; user-select: none; }
+    #current-time { right: 0; }
+    #duration { left: 0; }
+    .controls-wrapper { display: flex; align-items: center; gap: 0.8rem; }
+    .control-buttons { display: flex; gap: 0.8rem; }
+    .control-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; transition: all 0.2s ease-in-out; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+    .control-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
+    .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; background: rgba(255,255,255,0.1); }
+    .control-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .volume-control { display: flex; align-items: center; gap: 0.5rem; }
+    #volume-slider { appearance: none; width: 70px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; cursor: pointer; transition: opacity 0.2s ease; opacity: 0.7; }
+    #volume-slider:hover { opacity: 1; }
+    #volume-slider::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; background: white; border-radius: 50%; cursor: pointer; }
+    #volume-slider::-moz-range-thumb { width: 14px; height: 14px; background: white; border-radius: 50%; cursor: pointer; border: none; }
+    #close-player-btn { background: transparent; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.2rem; padding: 0.3rem; cursor: pointer; margin-right: auto; line-height: 1; }
+    #close-player-btn:hover { color: white; }
+    footer { background-color: var(--primary-color); color: rgba(255, 255, 255, 0.8); padding: 2.5rem 1.5rem; margin-top: 2rem; text-align: center; }
+    .radio-section { max-width: 800px; margin: 1.5rem auto; text-align: center; padding: 1rem; background: var(--card-background); border-radius: 12px; box-shadow: var(--card-shadow); }
+    .radio-section h3 { margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+    .radio-section iframe { width: 100%; max-width: 600px; height: 220px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .footer-info { font-size: 0.9rem; }
+    /* --- Responsive Adjustments (نفس التعديلات السابقة بدون تغيير) --- */
+    @media (max-width: 992px) { .player-info { min-width: 120px; } }
+    @media (max-width: 768px) { header { padding: 2rem 1rem; } .logo.logo-option-2 i { font-size: 3.5rem; } .logo.logo-option-2 h1 { font-size: 2.3rem; } .logo.logo-option-2 .tagline { font-size: 0.9rem; } .filters { flex-direction: column; width: 100%; padding: 0.8rem 0; align-items: stretch; } .filters select { width: 100%; max-width: none; } main { padding: 0 1rem; } .grid-container, #loading.skeleton-active { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); padding: 1.5rem 0; } .card { padding: 1rem; } .card h2 { font-size: 1.1rem; } .card p { font-size: 0.85rem; } .play-btn, .download-btn { padding: 0.7rem; font-size: 0.9rem; } #audio-player-container { height: auto; min-height: 70px; padding: 0.5rem 0.8rem; } .player-content { gap: 0.8rem; } .player-info h3 { font-size: 0.9rem; } .player-info p { font-size: 0.7rem; } .player-controls { gap: 0.8rem; } .controls-wrapper { gap: 0.5rem; } .control-buttons { gap: 0.5rem; } .control-btn { width: 35px; height: 35px; font-size: 0.9rem; } .volume-control { display: none; } }
+    @media (max-width: 480px) { body { font-size: 15px; } header { padding: 1.5rem 1rem; } .logo.logo-option-2 i { font-size: 3rem; margin-bottom: 0.5rem;} .logo.logo-option-2 h1 { font-size: 2rem; } .logo.logo-option-2 .tagline { font-size: 0.8rem; } .search-bar input { font-size: 0.9rem; padding: 0.7rem 2.5rem 0.7rem 0.8rem; } .search-bar i { right: 0.8rem; font-size: 0.9rem;} .categories { padding: 0.8rem 1rem; gap: 0.5rem;} .category-btn { padding: 0.5rem 1rem; font-size: 0.85rem; } main { padding: 0 0.5rem; } .grid-container, #loading.skeleton-active { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0;} .card h2 { font-size: 1.05rem; } #audio-player-container { padding-bottom: 10px; } .player-content { flex-direction: column; align-items: stretch; text-align: center; gap: 0.5rem; } .player-info { text-align: center; min-width: 0; } .player-controls { flex-direction: column; gap: 0.5rem; } .progress-wrapper { padding: 5px 0; width: 100%; order: -1; } #current-time, #duration { top: -15px; } .controls-wrapper { justify-content: center; width: 100%;} .volume-control { display: none; } #close-player-btn { position: absolute; top: 5px; left: 10px; } footer { padding: 2rem 1rem; } .radio-section h3 { font-size: 1.3rem; } .radio-section iframe { height: 100px; } .footer-info { font-size: 0.8rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- ... (نفس محتوى header السابق) ... -->
+  </header>
+
+  <nav class="categories" aria-label="تصفح حسب القسم">
+     <!-- ... (نفس محتوى nav السابق) ... -->
+  </nav>
+
+  <div class="radio-section">
+     <!-- ... (نفس محتوى radio-section السابق) ... -->
+  </div>
+
+  <main>
+    <div id="loading" class="skeleton-active">
+        <!-- Skeleton cards will be generated by JS -->
+    </div>
+    <div id="content" class="grid-container" aria-live="polite">
+        <!-- Audio cards will be loaded here -->
+    </div>
+  </main>
+
+  <!-- Audio Player -->
+  <div id="audio-player-container" class="hidden" role="region" aria-label="مشغل الصوت">
+     <!-- ... (نفس محتوى المشغل السفلي السابق) ... -->
+        <!-- تأكد أن هذا السطر موجود -->
+        <audio id="main-audio-player" preload="metadata"></audio>
+     <!-- ... -->
+  </div>
+
+  <footer>
+     <!-- ... (نفس محتوى footer السابق) ... -->
+  </footer>
+
+  <script>
+    // --- DOM Element References ---
+    const content = document.getElementById('content');
+    const loadingContainer = document.getElementById('loading');
+    const audioPlayer = document.getElementById('main-audio-player'); // *** تأكد من وجود هذا السطر ***
+    const playerContainer = document.getElementById('audio-player-container');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const downloadBtnPlayer = document.getElementById('download-btn-player');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeSpan = document.getElementById('current-time');
+    const durationSpan = document.getElementById('duration');
+    const progressContainer = document.querySelector('.progress-container');
+    const centerFilter = document.getElementById('centerFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const searchInput = document.getElementById('search');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const currentAudioTitle = document.getElementById('current-audio-title');
+    const currentAudioCenter = document.getElementById('current-audio-center');
+    const forwardBtn = document.getElementById('forward-btn');
+    const backwardBtn = document.getElementById('backward-btn');
+    const closePlayerBtn = document.getElementById('close-player-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const muteBtn = document.getElementById('mute-btn');
+    const currentYearSpan = document.getElementById('current-year');
+
+    // --- State Variables ---
+    let audioData = [];
+    let currentlyPlayingCard = null;
+    let currentDownloadUrl = null; // لتخزين رابط التحميل للمشغل السفلي
+    let previousVolume = 1;
+
+    // --- Initial Setup ---
+    playerContainer.classList.add('hidden');
+    playPauseBtn.setAttribute('aria-label', 'تشغيل');
+    if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+    // --- Skeleton Loader Functions ---
+    function createSkeletonCard() {
+        const card = document.createElement('div');
+        card.className = 'skeleton-card';
+        card.innerHTML = `
+            <div class="skeleton-line title"></div> <div class="skeleton-line meta"></div>
+            <div class="skeleton-line meta short"></div> <div class="skeleton-line meta"></div>
+            <div> <div class="skeleton-line button"></div> <div class="skeleton-line button"></div> </div>
+        `;
+        return card;
+    }
+    function showSkeletonLoaders(count = 6) {
+        loadingContainer.innerHTML = ''; loadingContainer.style.display = 'grid';
+        loadingContainer.classList.add('skeleton-active'); content.style.display = 'none';
+        loadingContainer.setAttribute('aria-busy', 'true');
+        for (let i = 0; i < count; i++) { loadingContainer.appendChild(createSkeletonCard()); }
+    }
+    function hideSkeletonLoaders() {
+        loadingContainer.innerHTML = ''; loadingContainer.style.display = 'none';
+        loadingContainer.classList.remove('skeleton-active'); content.style.display = 'grid';
+        loadingContainer.setAttribute('aria-busy', 'false');
+    }
+
+    // --- Data Loading ---
+    function loadAudioData() {
+        showSkeletonLoaders();
+        fetch('./data.json') // *** تأكد أن data.json في نفس المجلد ***
+          .then(res => {
+            if (!res.ok) {
+                // عرض خطأ أكثر وضوحا للمستخدم عن فشل تحميل البيانات
+                throw new Error(`فشل تحميل ملف البيانات (Status: ${res.status})`);
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (!Array.isArray(data)) {
+                 // التحقق من أن البيانات هي مصفوفة
+                 throw new Error('ملف البيانات لا يحتوي على مصفوفة JSON صالحة.');
+            }
+            audioData = data;
+            updateCenterFilter(data);
+            applyFiltersAndDisplay();
+          })
+          .catch(error => {
+            console.error("فشل تحميل أو معالجة البيانات:", error);
+            hideSkeletonLoaders(); // إخفاء الهياكل عند الخطأ أيضاً
+            content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>حدث خطأ: ${error.message}. يرجى التأكد من وجود ملف data.json وأنه بتنسيق صحيح.</p></div>`;
+          });
+          // لا يوجد finally هنا، hideSkeletonLoaders تتم داخل then أو catch
+    }
+
+    // --- Update Center Filter ---
+    function updateCenterFilter(data) {
+        try {
+            const centers = [...new Set(data.map(item => item.center).filter(Boolean))].sort();
+            centerFilter.innerHTML = '<option value="">كل المراكز</option>';
+            centers.forEach(center => {
+                const option = document.createElement('option');
+                option.value = center; option.textContent = center; centerFilter.appendChild(option);
+            });
+        } catch(e) {
+            console.error("خطأ في تحديث فلتر المراكز:", e);
+            // قد يكون مفيدا عرض رسالة خطأ هنا أيضا أو استخدام قيم افتراضية
+        }
+    }
+
+    // --- Display Items ---
+    function displayItems(items) {
+      content.innerHTML = ''; // Clear previous items
+      if (items.length === 0) {
+          content.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>لا توجد مواد صوتية تطابق بحثك أو الفلترة المحددة.</p></div>`;
+          hideSkeletonLoaders(); // إخفاء الهياكل إذا كانت النتائج فارغة
+          return;
+      }
+      try {
+          items.forEach((item, index) => {
+            const card = createCard(item, index);
+            if (card) { // تأكد أن البطاقة تم إنشاؤها
+                content.appendChild(card);
+                // Staggered fade-in animation
+                setTimeout(() => {
+                  if (card) { card.style.opacity = 1; card.style.transform = 'translateY(0)'; }
+                }, 50 * index);
+            } else {
+                console.warn("فشل إنشاء البطاقة للعنصر:", item);
+            }
+          });
+      } catch (e) {
+            console.error("خطأ أثناء عرض العناصر:", e);
+            content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>حدث خطأ أثناء محاولة عرض المواد.</p></div>`;
+      } finally {
+          // تم إخفاء الهياكل في loadAudioData بعد معالجة البيانات بنجاح أو فشل
+          // hideSkeletonLoaders(); // لا حاجة له هنا غالباً
+      }
+    }
+
+    // --- Create Card Element (Updated for simple audio URL) ---
+    function createCard(item, index) {
+      // إضافة تحقق للتأكد أن item هو كائن صالح
+      if (!item || typeof item !== 'object') {
+          console.error("بيانات غير صالحة لإنشاء بطاقة، العنصر:", item);
+          return null; // إرجاع null للإشارة إلى فشل إنشاء البطاقة
+      }
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.id = `card-${index}`;
+      card.style.opacity = 0;
+      card.style.transform = 'translateY(15px)';
+
+      const category = item.category || 'غير محدد'; // قيمة افتراضية
+      const categoryClass = `category-${category.replace(/\s+/g, '-')}`;
+      card.classList.add(categoryClass.toLowerCase());
+
+      const title = item.title || 'عنوان غير متوفر';
+      const center = item.center || 'مركز غير محدد';
+      const speaker = item.speaker || '';
+      const date = item.date ? formatDate(item.date) : 'تاريخ غير محدد';
+      const duration = item.duration || '';
+      const audioUrl = item.audio; // *** الحصول على الرابط النصي البسيط ***
+
+      // التحقق من وجود audioUrl قبل بناء الأزرار
+      const hasAudio = !!audioUrl;
+
+      card.innerHTML = `
+        <h2>${title}</h2>
+        <div class="card-meta">
+          <p><i class="fas fa-mosque"></i> ${center}</p>
+          <p><i class="fas fa-folder-open"></i> ${category}</p>
+          ${speaker ? `<p><i class="fas fa-user-tie"></i> ${speaker}</p>` : ''}
+          ${duration ? `<p><i class="fas fa-clock"></i> ${duration}</p>` : ''}
+          <p><i class="fas fa-calendar-alt"></i> ${date}</p>
+        </div>
+        <div class="audio-controls">
+          <button ${!hasAudio ? 'disabled' : ''} class="play-btn" aria-label="تشغيل ${title}">
+            <i class="fas fa-play"></i><span class="btn-text">تشغيل</span>
+          </button>
+          <button class="download-btn ${!hasAudio ? 'disabled' : ''}" aria-label="تحميل ${title}" ${!hasAudio ? 'disabled' : ''}>
+            <i class="fas fa-download"></i><span class="btn-text">تحميل</span>
+          </button>
+        </div>
+      `;
+
+      const playButton = card.querySelector('.play-btn');
+      const downloadButton = card.querySelector('.download-btn');
+
+      // إضافة المستمعين فقط إذا كان هناك رابط صوتي
+      if (hasAudio) {
+          playButton.onclick = () => {
+              playAudio(audioUrl, title, center, card, audioUrl); // تمرير نفس الرابط للتحميل
+          };
+          downloadButton.onclick = () => {
+              downloadAudio(audioUrl, title);
+          };
+      } else {
+           // تعطيل الأزرار إذا لم يكن هناك رابط (تم القيام به في HTML، لكن للتأكيد)
+           playButton.disabled = true;
+           downloadButton.disabled = true;
+      }
+
+      return card;
+    }
+
+    // --- Format Date ---
+    function formatDate(dateStr) {
+        try {
+            const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return 'تاريخ غير صالح';
+            return new Intl.DateTimeFormat('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+        } catch (e) {
+            console.error("Error formatting date:", dateStr, e);
+            return 'تاريخ غير محدد'; // قيمة افتراضية عند الخطأ
+        }
+    }
+
+    // --- Format Time ---
+    function formatTime(seconds) {
+        const time = Math.round(seconds || 0);
+        if (isNaN(time) || time < 0) return "0:00"; // قيمة افتراضية عند الخطأ
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const secs = time % 60;
+        const paddedSecs = secs.toString().padStart(2, '0');
+        const paddedMins = minutes.toString().padStart(2, '0');
+        return hours > 0 ? `${hours}:${paddedMins}:${paddedSecs}` : `${minutes}:${paddedSecs}`;
+    }
+
+    // --- Update Playing Card UI ---
+    function updateCardPlayingState(targetCard, isPlaying) {
+        if (currentlyPlayingCard && currentlyPlayingCard !== targetCard) {
+            currentlyPlayingCard.classList.remove('is-playing');
+            const oldPlayBtn = currentlyPlayingCard.querySelector('.play-btn');
+            if (oldPlayBtn) {
+                oldPlayBtn.innerHTML = `<i class="fas fa-play"></i><span class="btn-text">تشغيل</span>`;
+                oldPlayBtn.setAttribute('aria-label', `تشغيل ${oldPlayBtn.closest('.card')?.querySelector('h2')?.textContent || ''}`);
+            }
+        }
+        const playBtn = targetCard?.querySelector('.play-btn');
+        if (targetCard && playBtn) {
+            if (isPlaying) {
+                targetCard.classList.add('is-playing');
+                playBtn.innerHTML = `<i class="fas fa-pause"></i><span class="btn-text">إيقاف</span>`;
+                playBtn.setAttribute('aria-label', `إيقاف ${targetCard.querySelector('h2')?.textContent || ''}`);
+                currentlyPlayingCard = targetCard;
+            } else {
+                targetCard.classList.remove('is-playing');
+                playBtn.innerHTML = `<i class="fas fa-play"></i><span class="btn-text">تشغيل</span>`;
+                playBtn.setAttribute('aria-label', `تشغيل ${targetCard.querySelector('h2')?.textContent || ''}`);
+                if (currentlyPlayingCard === targetCard) currentlyPlayingCard = null;
+            }
+        } else if (!isPlaying && currentlyPlayingCard) {
+             currentlyPlayingCard.classList.remove('is-playing');
+             const oldPlayBtn = currentlyPlayingCard.querySelector('.play-btn');
+             if (oldPlayBtn) {
+                oldPlayBtn.innerHTML = `<i class="fas fa-play"></i><span class="btn-text">تشغيل</span>`;
+                oldPlayBtn.setAttribute('aria-label', `تشغيل ${oldPlayBtn.closest('.card')?.querySelector('h2')?.textContent || ''}`);
+            }
+             currentlyPlayingCard = null;
+        }
+    }
+
+
+    // --- Audio Playback ---
+    function playAudio(audioSrc, title, center, cardElement, downloadSrc = null) {
+        if (!audioSrc || audioSrc === '#') return;
+        console.log(`Attempting to play: ${title} from ${audioSrc}`); // Debug log
+
+        if (!audioPlayer) {
+             console.error("عنصر مشغل الصوت الرئيسي غير موجود!");
+             alert("خطأ داخلي: مشغل الصوت غير موجود.");
+             return;
+        }
+
+        try {
+            if (!audioPlayer.paused) {
+                audioPlayer.pause();
+                if(currentlyPlayingCard && currentlyPlayingCard !== cardElement) {
+                    updateCardPlayingState(null, false);
+                }
+            }
+
+            // *** تعيين المصدر وتوقع حدوث خطأ محتمل هنا ***
+            audioPlayer.src = audioSrc;
+
+            currentAudioTitle.textContent = title;
+            currentAudioCenter.textContent = center;
+            playerContainer.classList.remove('hidden');
+
+            currentDownloadUrl = downloadSrc || audioSrc;
+            playerContainer.dataset.currentDownloadSrc = currentDownloadUrl;
+            playerContainer.dataset.currentTitle = title;
+            downloadBtnPlayer.disabled = !currentDownloadUrl;
+
+            progressBar.style.width = '0%';
+            progressContainer.setAttribute('aria-valuenow', '0');
+            currentTimeSpan.textContent = formatTime(0);
+            durationSpan.textContent = formatTime(0); // سيتم تحديثها في onloadedmetadata
+            playPauseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            playPauseBtn.setAttribute('aria-label', 'جاري التحميل');
+            playPauseBtn.disabled = true;
+
+             // --- إعادة تعيين مستمعي الأحداث في كل مرة يتم فيها تغيير المصدر ---
+            // هذا يضمن أننا لا نراكم المستمعين القدامى
+            const handlePlay = () => {
+                audioPlayer.play().then(() => {
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; playPauseBtn.setAttribute('aria-label', 'إيقاف مؤقت');
+                    playPauseBtn.disabled = false; updateCardPlayingState(cardElement, true);
+                }).catch(error => {
+                    console.error("خطأ عند محاولة التشغيل:", error); playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playPauseBtn.setAttribute('aria-label', 'تشغيل'); playPauseBtn.disabled = false; updateCardPlayingState(cardElement, false);
+                    // قد نعرض رسالة للمستخدم هنا أيضاً
+                    alert(`لا يمكن تشغيل الملف: ${error.message}`);
+                });
+            };
+            const handlePause = () => {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; playPauseBtn.setAttribute('aria-label', 'تشغيل');
+                playPauseBtn.disabled = false; updateCardPlayingState(cardElement, false);
+            };
+
+             // إزالة المستمعين القدامى قبل إضافة الجدد (احتياطي)
+             audioPlayer.onloadedmetadata = null;
+             audioPlayer.ontimeupdate = null;
+             audioPlayer.onended = null;
+             audioPlayer.onerror = null; // مهم إزالة معالج الخطأ القديم
+
+             // إضافة المستمعين الجدد
+             audioPlayer.onloadedmetadata = () => {
+                 console.log("Metadata loaded, duration:", audioPlayer.duration); // Debug log
+                 durationSpan.textContent = formatTime(audioPlayer.duration);
+                 progressContainer.setAttribute('aria-valuemax', audioPlayer.duration);
+                 // لا تقم بالتشغيل هنا مباشرة، انتظر تفاعل المستخدم أو الحدث المناسب
+                 // handlePlay(); // <-- إزالة التشغيل التلقائي من هنا
+                 // بدلاً من ذلك، تمكين زر التشغيل بعد التحميل الأولي للبيانات
+                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; // إظهار زر التشغيل
+                 playPauseBtn.setAttribute('aria-label', 'تشغيل');
+                 playPauseBtn.disabled = false; // تمكين الزر
+                 // قد تحتاج إلى استدعاء handlePlay() إذا كان الهدف التشغيل الفوري بعد النقر
+                 // handlePlay(); // <<--- أعد هذه إذا أردت التشغيل الفوري بعد النقر وتحميل الميتا بيانات
+             };
+             audioPlayer.ontimeupdate = () => {
+                if (audioPlayer.duration && !isNaN(audioPlayer.currentTime)) {
+                    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+                    progressContainer.setAttribute('aria-valuenow', audioPlayer.currentTime);
+                }
+             };
+             audioPlayer.onended = () => {
+                 handlePause(); updateCardPlayingState(null, false);
+             };
+             audioPlayer.onerror = (e) => {
+                 console.error("Audio player error event:", e);
+                 console.error("Audio player error code:", audioPlayer.error?.code); // 1:MEDIA_ERR_ABORTED, 2:MEDIA_ERR_NETWORK, 3:MEDIA_ERR_DECODE, 4:MEDIA_ERR_SRC_NOT_SUPPORTED
+                 console.error("Audio player error message:", audioPlayer.error?.message);
+                 let userMessage = "حدث خطأ غير معروف أثناء محاولة تشغيل الملف.";
+                 if (audioPlayer.error) {
+                     switch (audioPlayer.error.code) {
+                         case MediaError.MEDIA_ERR_ABORTED: userMessage = "تم إحباط تحميل الملف."; break;
+                         case MediaError.MEDIA_ERR_NETWORK: userMessage = "حدث خطأ في الشبكة أثناء تحميل الملف."; break;
+                         case MediaError.MEDIA_ERR_DECODE: userMessage = "حدث خطأ أثناء فك ترميز الملف الصوتي (قد يكون تالفاً)."; break;
+                         case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED: userMessage = "الملف الصوتي غير مدعوم أو لا يمكن العثور عليه بالمسار المحدد."; break;
+                     }
+                 }
+                 alert(userMessage); // إظهار رسالة خطأ للمستخدم
+
+                 handlePause();
+                 currentAudioTitle.textContent = "خطأ في تشغيل الصوت"; currentAudioCenter.textContent = "";
+                 durationSpan.textContent = "0:00"; updateCardPlayingState(cardElement, false);
+                 downloadBtnPlayer.disabled = true;
+                 playerContainer.classList.add('hidden'); // إخفاء المشغل عند الخطأ الفادح
+             };
+
+            // *** محاولة تحميل المصدر ***
+            audioPlayer.load();
+            // *** محاولة التشغيل مباشرة بعد النقر على زر البطاقة ***
+            // هذا يتم استدعاؤه بعد تعيين المصدر وقبل اكتمال التحميل بالضرورة
+            // المتصفح سيقوم بالتحميل والتشغيل عندما يكون جاهزاً
+             handlePlay(); // <<--- جرب إعادة هذه هنا لبدء التشغيل فوراً
+
+        } catch (error) {
+            console.error("خطأ عام في دالة playAudio:", error);
+            alert("حدث خطأ غير متوقع أثناء محاولة إعداد المشغل.");
+            // قد تحتاج لإخفاء المشغل أو إعادة تعيين الواجهة هنا أيضاً
+             playerContainer.classList.add('hidden');
+             if (cardElement) updateCardPlayingState(cardElement, false);
+        }
+    }
+
+    // --- Filter Logic ---
+    function getFilteredItems() {
+        const searchText = searchInput.value.toLowerCase().trim();
+        const selectedCenterValue = centerFilter.value;
+        const selectedDateValue = dateFilter.value;
+        const activeCategoryBtn = document.querySelector('.category-btn.active');
+        const selectedCategoryValue = activeCategoryBtn ? (activeCategoryBtn.dataset.category === 'all' ? '' : activeCategoryBtn.dataset.category) : '';
+        return audioData.filter(item => {
+            const titleMatch = item?.title?.toLowerCase().includes(searchText) ?? false;
+            const centerTextMatch = item?.center?.toLowerCase().includes(searchText) ?? false;
+            const speakerMatch = item?.speaker?.toLowerCase().includes(searchText) ?? false;
+            const searchOk = searchText === '' || titleMatch || centerTextMatch || speakerMatch;
+            const centerOk = !selectedCenterValue || item?.center === selectedCenterValue;
+            const categoryOk = !selectedCategoryValue || item?.category === selectedCategoryValue;
+            const dateOk = !selectedDateValue || isWithinDateRange(item?.date, selectedDateValue);
+            return searchOk && centerOk && categoryOk && dateOk;
+        });
+    }
+    function applyFiltersAndDisplay() { getFilteredItems().length > 0 ? displayItems(getFilteredItems()) : displayItems([]); /* عرض حالة فارغة إذا لم تكن هناك نتائج */ }
+    function isWithinDateRange(dateStr, range) { /* ... (نفس الدالة السابقة) ... */ }
+
+    // --- Event Listeners ---
+    searchInput.addEventListener('input', applyFiltersAndDisplay);
+    centerFilter.addEventListener('change', applyFiltersAndDisplay);
+    dateFilter.addEventListener('change', applyFiltersAndDisplay);
+    categoryButtons.forEach(btn => { btn.addEventListener('click', () => { categoryButtons.forEach(b => b.classList.remove('active')); btn.classList.add('active'); applyFiltersAndDisplay(); }); });
+
+    // --- Player Control Event Listeners ---
+    playPauseBtn.onclick = () => {
+        if (!audioPlayer) return;
+        if (audioPlayer.paused) {
+            audioPlayer.play().catch(e => console.error("Play error:", e)); // Catch potential errors on play
+        } else {
+            audioPlayer.pause();
+        }
+        // تحديث الواجهة سيتم عبر مستمع الحدث onStateChange (أو onplay/onpause)
+    };
+    forwardBtn.onclick = () => { if (audioPlayer?.duration) audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration); };
+    backwardBtn.onclick = () => { if (audioPlayer?.duration) audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0); };
+    progressContainer.onclick = (e) => { if (audioPlayer?.duration) { /* ... */ } };
+    progressContainer.onkeydown = (e) => { if (audioPlayer?.duration) { /* ... */ } };
+    volumeSlider.oninput = () => { /* ... */ };
+    muteBtn.onclick = () => { /* ... */ };
+    closePlayerBtn.onclick = () => { /* ... */ };
+
+    // Player Download Button
+    downloadBtnPlayer.onclick = () => {
+        const title = playerContainer.dataset.currentTitle || 'audio';
+        if (currentDownloadUrl && currentDownloadUrl !== '#') {
+            downloadAudio(currentDownloadUrl, title);
+        } else {
+            console.warn("No download URL for player button.");
+            alert("لا يوجد رابط تحميل لهذا المقطع.");
+        }
+    };
+
+    // --- Download Function (Using fetch/blob for same-origin) ---
+    async function downloadAudio(audioUrl, title) {
+        if (!audioUrl || audioUrl === '#') { alert("رابط التحميل غير متوفر."); return; }
+        console.log(`Attempting to download: ${title} from ${audioUrl}`);
+
+        // --- تحسين العثور على الزر وتحديث حالته ---
+        let targetButton = null;
+        // محاولة العثور على زر التحميل في البطاقة النشطة
+        if (currentlyPlayingCard) {
+            const potentialBtn = currentlyPlayingCard.querySelector('.download-btn');
+            // تأكد أن هذا الزر مرتبط بنفس الـ URL (احتياطي)
+             // يمكنك إضافة data-url للزر في createCard لتسهيل المقارنة
+            targetButton = potentialBtn;
+        }
+        // إذا لم يكن هناك بطاقة نشطة أو لم يتم العثور على الزر، حاول زر المشغل
+        if (!targetButton && playerContainer.dataset.currentDownloadSrc === audioUrl) {
+            targetButton = downloadBtnPlayer;
+        }
+        // كحل أخير، ابحث في كل البطاقات (غير مثالي للأداء)
+        if (!targetButton) {
+            const allDownloadButtons = content.querySelectorAll('.download-btn');
+             // ستحتاج لطريقة لربط كل زر بالـ URL الخاص به لتحديد الصحيح
+             // إضافة data-url='${audioUrl}' للزر في createCard هي الأفضل
+            // for (let btn of allDownloadButtons) {
+            //    if (btn.dataset.url === audioUrl) { // يتطلب إضافة data-url
+            //        targetButton = btn;
+            //        break;
+            //    }
+            //}
+        }
+
+        let originalButtonContent = null;
+        if (targetButton) {
+            originalButtonContent = targetButton.innerHTML;
+            targetButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span class="btn-text"> جارٍ التحميل</span>`;
+            targetButton.disabled = true;
+        }
+        // --- نهاية تحسين الزر ---
+
+        try {
+            const response = await fetch(audioUrl);
+            if (!response.ok) { throw new Error(`فشل تحميل الملف: ${response.status} ${response.statusText}`); }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none'; a.href = url;
+            const filename = audioUrl.substring(audioUrl.lastIndexOf('/') + 1).split('?')[0];
+            a.download = decodeURIComponent(filename) || `${title || 'audio'}.mp3`;
+            document.body.appendChild(a); a.click();
+            window.URL.revokeObjectURL(url); document.body.removeChild(a);
+        } catch (error) {
+            console.error("Error downloading file:", error);
+            alert(`حدث خطأ أثناء التحميل: ${error.message}`);
+        } finally {
+            if (targetButton && originalButtonContent) { // استعادة محتوى الزر الأصلي
+                targetButton.innerHTML = originalButtonContent;
+                targetButton.disabled = false;
+            } else if (targetButton) { // استعادة افتراضية إذا لم يتم حفظ المحتوى الأصلي
+                 targetButton.innerHTML = `<i class="fas fa-download"></i><span class="btn-text">تحميل</span>`;
+                 targetButton.disabled = false;
+            }
+        }
+    }
+
+    // --- Load Initial Data ---
+    document.addEventListener('DOMContentLoaded', loadAudioData);
+
+  </script>
+</body>
+</html>
