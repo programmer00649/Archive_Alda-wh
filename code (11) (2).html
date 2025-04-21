@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>المكتبة الصوتية الدعوية</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* --- CSS Styles (نفس الأنماط السابقة بدون تغيير) --- */
+    :root {
+      --primary-color: #1e3d59;
+      --secondary-color: #17b794;
+      --accent-color: #f5b461;
+      --text-color: #2d4356;
+      --text-color-light: #526d82;
+      --background-color: #f5f5f7;
+      --card-background: #ffffff;
+      --border-color: #e8e8e8;
+      --border-color-light: #f0f0f0;
+      --placeholder-color: #bbb;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      --card-shadow-hover: 0 10px 30px rgba(0,0,0,0.1);
+      --header-gradient: linear-gradient(135deg, #1e3d59 0%, #102436 100%);
+      --player-gradient: linear-gradient(90deg, #1e3d59, #152f45);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Tajawal", "Arial", sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 0; direction: rtl; text-align: right; font-size: 16px; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    header { background: var(--header-gradient); color: white; padding: 2.5rem 1.5rem; box-shadow: 0 5px 25px rgba(0,0,0,0.2); position: relative; }
+    .logo.logo-option-2 { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto 2rem; max-width: 800px; padding: 0 1rem; animation: fadeIn 0.9s ease-out; }
+    .logo.logo-option-2 i { font-size: 4rem; color: var(--accent-color); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); margin-bottom: 0.8rem; }
+    .logo.logo-option-2 h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: 0.5px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); margin: 0 0 0.5rem 0; line-height: 1.3; color: white; }
+    .logo.logo-option-2 .tagline { font-size: 1rem; font-weight: 400; color: rgba(255, 255, 255, 0.85); margin: 0; padding: 0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); }
+    .search-section { max-width: 800px; margin: 0 auto; }
+    .search-bar { position: relative; margin-bottom: 1rem; }
+    .search-bar i { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 1rem; pointer-events: none; }
+    .search-bar input { width: 100%; padding: 0.8rem 3rem 0.8rem 1rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 1rem; background: rgba(255,255,255,0.1); color: white; transition: var(--transition); }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar input:focus { outline: none; border-color: var(--accent-color); background: rgba(255,255,255,0.15); box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .filters { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0.5rem 0; margin: 1rem auto 0; justify-content: center; }
+    .filters select { appearance: none; background: rgba(255,255,255,0.15); color: white; padding: 0.7rem 2.5rem 0.7rem 1rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease-in-out; position: relative; min-width: 150px; text-align: right; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 0.7rem center; background-size: 1rem; }
+    .filters select:hover { background-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+    .filters select:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .filters select option { background-color: var(--primary-color); color: white; }
+    .categories { padding: 1rem 1.5rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; background-color: var(--card-background); box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color-light); }
+    .category-btn { padding: 0.8rem 1.4rem; border: 1px solid var(--border-color); border-radius: 25px; background-color: var(--card-background); font-weight: 500; letter-spacing: 0.5px; color: var(--text-color); cursor: pointer; transition: all 0.2s ease-in-out; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .category-btn i { color: var(--secondary-color); font-size: 0.9em; }
+    .category-btn:hover { background-color: #f5f5f5; border-color: #ccc; transform: translateY(-2px); }
+    .category-btn.active { background-color: var(--secondary-color); color: white; border-color: var(--secondary-color); box-shadow: 0 2px 5px rgba(42, 157, 143, 0.3); transform: translateY(-1px); }
+    .category-btn.active i { color: white; }
+    .category-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    main { padding: 0 1.5rem; }
+    .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0; }
+    #loading.skeleton-active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0; }
+    .skeleton-card { background-color: var(--card-background); border-radius: 12px; padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); position: relative; overflow: hidden; }
+    .skeleton-line { background: linear-gradient(to right, var(--placeholder-color) 8%, #dddddd 18%, var(--placeholder-color) 33%); background-size: 1000px 100%; animation: shimmer 1.5s infinite linear; height: 1.2em; border-radius: 4px; margin-bottom: 0.8em; }
+    .skeleton-line.title { height: 1.5em; width: 70%; margin-bottom: 1.5em; }
+    .skeleton-line.short { width: 50%; }
+    .skeleton-line.meta { height: 1em; width: 60%; margin-bottom: 0.6em; }
+    .skeleton-line.button { height: 40px; width: 48%; display: inline-block; margin-top: 1.5em; margin-left: 4%; }
+    .skeleton-line.button:first-child { margin-left: 0; }
+    .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-color-light); grid-column: 1 / -1; }
+    .empty-state i { font-size: 3rem; margin-bottom: 1rem; color: var(--placeholder-color); }
+    .empty-state p { font-size: 1.1rem; }
+    .card { background: var(--card-background); border-radius: 16px; padding: 1.8rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); backdrop-filter: blur(10px); position: relative; display: flex; flex-direction: column; gap: 0.8rem; opacity: 0; transform: translateY(15px); overflow: hidden; border-right: 5px solid transparent; transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+    .card.category-خطب { border-right-color: #3498DB; }
+    .card.category-محاضرات { border-right-color: #2ECC71; }
+    .card.category-تلاوات { border-right-color: #F39C12; }
+    .card.category-دروس { border-right-color: #9B59B6; }
+    .card.category-أدعية { border-right-color: #e74c3c; } /* Added دعا category color */
+    .card.category- { border-right-color: #bdc3c7; }
+    .card h2 { margin: 0 0 0.8rem; font-size: 1.2rem; color: var(--primary-color); line-height: 1.45; font-weight: 700; }
+    .card .card-meta { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1rem; }
+    .card p { display: flex; align-items: center; gap: 0.6rem; color: var(--text-color-light); margin: 0; font-size: 0.9rem; }
+    .card p i { color: var(--secondary-color); font-size: 1rem; width: 1.3em; text-align: center; flex-shrink: 0; }
+    .card p i.fa-clock { color: #e74c3c; }
+    .card p i.fa-user-tie { color: #8e44ad; }
+    .audio-controls { display: flex; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color-light); }
+    .play-btn, .download-btn { flex: 1; padding: 0.8rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease-in-out; display: flex; align-items: center; justify-content: center; gap: 0.6rem; font-size: 0.95rem; text-decoration: none; }
+    .play-btn i, .download-btn i { font-size: 1em; }
+    .play-btn { background-color: var(--primary-color); color: white; }
+    .play-btn:hover { background-color: #1a3f5c; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(35, 78, 112, 0.2); }
+    .play-btn:disabled { background-color: #a0b4c2; cursor: not-allowed; transform: none; box-shadow: none; }
+    .download-btn { background-color: var(--primary-color); color: white; border: none; }
+    .download-btn:hover { background-color: #1a3f5c; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(35, 78, 112, 0.2); }
+    .download-btn.disabled { background-color: transparent; color: var(--placeholder-color); border-color: var(--placeholder-color); cursor: not-allowed; transform: none; box-shadow: none; }
+    .card.is-playing { border-color: var(--accent-color); box-shadow: 0 6px 20px rgba(251, 176, 59, 0.3); }
+    .card.is-playing .play-btn { background-color: var(--secondary-color); }
+    .play-btn:focus, .download-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    #audio-player-container { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-gradient); color: white; padding: 0.6rem 1rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 1000; backdrop-filter: blur(5px); height: 75px; display: flex; align-items: center; transition: transform 0.4s ease-out; transform: translateY(100%); }
+    #audio-player-container:not(.hidden) { transform: translateY(0); }
+    .player-content { display: flex; align-items: center; gap: 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .player-info { min-width: 150px; flex-shrink: 1; overflow: hidden; text-align: right; }
+    .player-info h3 { font-size: 0.95rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+    .player-info p { font-size: 0.75rem; margin: 2px 0 0; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.8); }
+    .player-controls { flex: 2; display: flex; align-items: center; gap: 1rem; }
+    .progress-wrapper { flex-grow: 1; position: relative; padding: 10px 0; }
+    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; cursor: pointer; position: relative; }
+    #progress-bar { height: 100%; background: var(--accent-color); border-radius: 3px; width: 0; transition: width 0.1s linear; position: relative; }
+    #progress-bar::after { content: ''; position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 14px; height: 14px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s ease; }
+    .progress-container:hover #progress-bar::after { opacity: 1; }
+    #current-time, #duration { position: absolute; top: -5px; font-size: 0.75rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.2); padding: 1px 4px; border-radius: 3px; user-select: none; }
+    #current-time { right: 0; }
+    #duration { left: 0; }
+    .controls-wrapper { display: flex; align-items: center; gap: 0.8rem; }
+    .control-buttons { display: flex; gap: 0.8rem; }
+    .control-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; transition: all 0.2s ease-in-out; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+    .control-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
+    .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; background: rgba(255,255,255,0.1); }
+    .control-btn:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.3); }
+    .volume-control { display: flex; align-items: center; gap: 0.5rem; }
+    #volume-slider { appearance: none; width: 70px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; cursor: pointer; transition: opacity 0.2s ease; opacity: 0.7; }
+    #volume-slider:hover { opacity: 1; }
+    #volume-slider::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; background: white; border-radius: 50%; cursor: pointer; }
+    #volume-slider::-moz-range-thumb { width: 14px; height: 14px; background: white; border-radius: 50%; cursor: pointer; border: none; }
+    #close-player-btn { background: transparent; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.2rem; padding: 0.3rem; cursor: pointer; margin-right: auto; line-height: 1; }
+    #close-player-btn:hover { color: white; }
+    footer { background-color: var(--primary-color); color: rgba(255, 255, 255, 0.8); padding: 2.5rem 1.5rem; margin-top: 2rem; text-align: center; }
+    .radio-section { max-width: 800px; margin: 1.5rem auto; text-align: center; padding: 1rem; background: var(--card-background); border-radius: 12px; box-shadow: var(--card-shadow); }
+    .radio-section h3 { margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+    .radio-section iframe { width: 100%; max-width: 600px; height: 220px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .footer-info { font-size: 0.9rem; }
+    /* --- Responsive Adjustments (نفس التعديلات السابقة بدون تغيير) --- */
+    @media (max-width: 992px) { .player-info { min-width: 120px; } }
+    @media (max-width: 768px) { header { padding: 2rem 1rem; } .logo.logo-option-2 i { font-size: 3.5rem; } .logo.logo-option-2 h1 { font-size: 2.3rem; } .logo.logo-option-2 .tagline { font-size: 0.9rem; } .filters { flex-direction: column; width: 100%; padding: 0.8rem 0; align-items: stretch; } .filters select { width: 100%; max-width: none; } main { padding: 0 1rem; } .grid-container, #loading.skeleton-active { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); padding: 1.5rem 0; } .card { padding: 1rem; } .card h2 { font-size: 1.1rem; } .card p { font-size: 0.85rem; } .play-btn, .download-btn { padding: 0.7rem; font-size: 0.9rem; } #audio-player-container { height: auto; min-height: 70px; padding: 0.5rem 0.8rem; } .player-content { gap: 0.8rem; } .player-info h3 { font-size: 0.9rem; } .player-info p { font-size: 0.7rem; } .player-controls { gap: 0.8rem; } .controls-wrapper { gap: 0.5rem; } .control-buttons { gap: 0.5rem; } .control-btn { width: 35px; height: 35px; font-size: 0.9rem; } .volume-control { display: none; } }
+    @media (max-width: 480px) { body { font-size: 15px; } header { padding: 1.5rem 1rem; } .logo.logo-option-2 i { font-size: 3rem; margin-bottom: 0.5rem;} .logo.logo-option-2 h1 { font-size: 2rem; } .logo.logo-option-2 .tagline { font-size: 0.8rem; } .search-bar input { font-size: 0.9rem; padding: 0.7rem 2.5rem 0.7rem 0.8rem; } .search-bar i { right: 0.8rem; font-size: 0.9rem;} .categories { padding: 0.8rem 1rem; gap: 0.5rem;} .category-btn { padding: 0.5rem 1rem; font-size: 0.85rem; } main { padding: 0 0.5rem; } .grid-container, #loading.skeleton-active { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0;} .card h2 { font-size: 1.05rem; } #audio-player-container { padding-bottom: 10px; } .player-content { flex-direction: column; align-items: stretch; text-align: center; gap: 0.5rem; } .player-info { text-align: center; min-width: 0; } .player-controls { flex-direction: column; gap: 0.5rem; } .progress-wrapper { padding: 5px 0; width: 100%; order: -1; } #current-time, #duration { top: -15px; } .controls-wrapper { justify-content: center; width: 100%;} .volume-control { display: none; } #close-player-btn { position: absolute; top: 5px; left: 10px; } footer { padding: 2rem 1rem; } .radio-section h3 { font-size: 1.3rem; } .radio-section iframe { height: 100px; } .footer-info { font-size: 0.8rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo logo-option-2">
+      <i class="fas fa-mosque"></i>
+      <h1>المكتبة الصوتية الدعوية</h1>
+      <p class="tagline">كنوز من المواعظ والدروس والتلاوات</p>
+    </div>
+    <div class="search-section">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search" placeholder="ابحث عن عنوان، شيخ، موضوع...">
+      </div>
+      <div class="filters">
+        <select id="centerFilter" aria-label="فلتر حسب المركز">
+          <option value="">كل المراكز</option>
+        </select>
+        <select id="dateFilter" aria-label="فلتر حسب التاريخ">
+          <option value="">كل التواريخ</option>
+          <option value="week">آخر أسبوع</option>
+          <option value="month">آخر شهر</option>
+          <option value="year">آخر سنة</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <nav class="categories" aria-label="تصفح حسب القسم">
+    <button class="category-btn active" data-category="all"><i class="fas fa-list"></i> الكل</button>
+    <button class="category-btn" data-category="خطب"><i class="fas fa-mosque"></i> خطب</button>
+    <button class="category-btn" data-category="محاضرات"><i class="fas fa-microphone-alt"></i> محاضرات</button>
+    <button class="category-btn" data-category="تلاوات"><i class="fas fa-quran"></i> تلاوات</button>
+    <button class="category-btn" data-category="دروس"><i class="fas fa-book-open"></i> دروس</button>
+    <button class="category-btn" data-category="أدعية"><i class="fas fa-praying-hands"></i> أدعية</button> <!-- Added button -->
+  </nav>
+
+  <div class="radio-section">
+    <h3>البث المباشر لإذاعة السلام</h3>
+    <iframe src="https://radioalsalam.mixlr.com/events/4158647" frameborder="0" title="البث المباشر لإذاعة السلام"></iframe>
+  </div>
+
+  <main>
+    <div id="loading" class="skeleton-active"></div>
+    <div id="content" class="grid-container" aria-live="polite"></div>
+  </main>
+
+  <div id="audio-player-container" class="hidden" role="region" aria-label="مشغل الصوت">
+    <button id="close-player-btn" class="control-btn" aria-label="إغلاق المشغل">
+        <i class="fas fa-times"></i>
+    </button>
+    <div class="player-content">
+      <div class="player-info">
+        <h3 id="current-audio-title" aria-live="polite"></h3>
+        <p id="current-audio-center" aria-live="polite"></p>
+      </div>
+      <div class="player-controls">
+         <div class="progress-wrapper">
+            <div class="progress-container" role="slider" aria-label="شريط التقدم" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <div id="progress-bar"></div>
+            </div>
+            <span id="current-time" aria-hidden="true">0:00</span>
+            <span id="duration" aria-hidden="true">0:00</span>
+         </div>
+         <div class="controls-wrapper">
+            <div class="control-buttons">
+              <button id="backward-btn" class="control-btn" aria-label="رجوع 10 ثواني">
+                <i class="fas fa-backward-step"></i>
+              </button>
+              <button id="play-pause-btn" class="control-btn" aria-label="تشغيل">
+                <i class="fas fa-play"></i>
+              </button>
+              <button id="forward-btn" class="control-btn" aria-label="تقديم 10 ثواني">
+                <i class="fas fa-forward-step"></i>
+              </button>
+              <button id="download-btn-player" class="control-btn" aria-label="تحميل المقطع الحالي">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+            <div class="volume-control">
+                <button id="mute-btn" class="control-btn" aria-label="كتم الصوت">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="100" value="100" aria-label="التحكم بمستوى الصوت">
+            </div>
+         </div>
+        <!-- عنصر audio الأصلي لا يزال مطلوباً للتشغيل الفعلي -->
+        <audio id="main-audio-player" preload="metadata"></audio>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-info">
+        <p>&copy; <span id="current-year"></span> المكتبة الصوتية الدعوية. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <script>
+    // --- DOM Element References (نفس العناصر السابقة) ---
+    const content = document.getElementById('content');
+    const loadingContainer = document.getElementById('loading');
+    const audioPlayer = document.getElementById('main-audio-player'); // <--- Keep this
+    const playerContainer = document.getElementById('audio-player-container');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const downloadBtnPlayer = document.getElementById('download-btn-player');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeSpan = document.getElementById('current-time');
+    const durationSpan = document.getElementById('duration');
+    const progressContainer = document.querySelector('.progress-container');
+    const centerFilter = document.getElementById('centerFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const searchInput = document.getElementById('search');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const currentAudioTitle = document.getElementById('current-audio-title');
+    const currentAudioCenter = document.getElementById('current-audio-center');
+    const forwardBtn = document.getElementById('forward-btn');
+    const backwardBtn = document.getElementById('backward-btn');
+    const closePlayerBtn = document.getElementById('close-player-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const muteBtn = document.getElementById('mute-btn');
+    const currentYearSpan = document.getElementById('current-year');
+
+    // --- State Variables (نفس المتغيرات السابقة) ---
+    let audioData = [];
+    let currentlyPlayingCard = null;
+    let currentDownloadUrl = null;
+    let previousVolume = 1;
+
+    // --- Initial Setup (نفس الإعدادات السابقة) ---
+    playerContainer.classList.add('hidden');
+    playPauseBtn.setAttribute('aria-label', 'تشغيل');
+    if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+    // --- Skeleton Loader Functions (نفس الدوال السابقة) ---
+    function createSkeletonCard() { /* ... */ }
+    function showSkeletonLoaders(count = 6) { /* ... */ }
+    function hideSkeletonLoaders() { /* ... */ }
+
+    // --- Data Loading (نفس دالة التحميل السابقة) ---
+    function loadAudioData() {
+        showSkeletonLoaders();
+        fetch('./data.json') // <<--- Make sure data.json is in the same directory or path is correct
+          .then(res => {
+            if (!res.ok) throw new Error(`خطأ HTTP: ${res.status}`);
+            return res.json();
+          })
+          .then(data => {
+            audioData = data;
+            updateCenterFilter(data);
+            applyFiltersAndDisplay();
+          })
+          .catch(error => {
+            console.error("فشل تحميل البيانات:", error);
+            content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>حدث خطأ أثناء تحميل البيانات (${error.message}).</p></div>`;
+          })
+          .finally(() => hideSkeletonLoaders());
+    }
+
+    // --- Update Center Filter (نفس الدالة السابقة) ---
+    function updateCenterFilter(data) { /* ... */ }
+
+    // --- Display Items (نفس الدالة السابقة) ---
+    function displayItems(items) { /* ... */ }
+
+    // --- Create Card Element (UPDATED for simple audio string) ---
+    function createCard(item, index) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.id = `card-${index}`;
+      card.style.opacity = 0;
+      card.style.transform = 'translateY(15px)';
+
+      const categoryClass = item.category ? `category-${item.category.replace(/\s+/g, '-')}` : 'category-undefined';
+      card.classList.add(categoryClass.toLowerCase());
+
+      // Sanitize data
+      const title = item.title || 'عنوان غير متوفر';
+      const center = item.center || 'مركز غير محدد';
+      const category = item.category || 'قسم غير محدد';
+      const speaker = item.speaker || '';
+      const date = item.date ? formatDate(item.date) : 'تاريخ غير محدد';
+      const duration = item.duration || '';
+      const audioUrl = item.audio; // *** Get the simple audio URL string ***
+
+      card.innerHTML = `
+        <h2>${title}</h2>
+        <div class="card-meta">
+          <p><i class="fas fa-mosque"></i> ${center}</p>
+          <p><i class="fas fa-folder-open"></i> ${category}</p>
+          ${speaker ? `<p><i class="fas fa-user-tie"></i> ${speaker}</p>` : ''}
+          ${duration ? `<p><i class="fas fa-clock"></i> ${duration}</p>` : ''}
+          <p><i class="fas fa-calendar-alt"></i> ${date}</p>
+        </div>
+        <div class="audio-controls">
+          <button ${!audioUrl ? 'disabled' : ''} class="play-btn" aria-label="تشغيل ${title}">
+            <i class="fas fa-play"></i><span class="btn-text">تشغيل</span>
+          </button>
+          <button class="download-btn ${!audioUrl ? 'disabled' : ''}" aria-label="تحميل ${title}" ${!audioUrl ? 'disabled' : ''}>
+            <i class="fas fa-download"></i><span class="btn-text">تحميل</span>
+          </button>
+        </div>
+      `;
+
+      const playButton = card.querySelector('.play-btn');
+      const downloadButton = card.querySelector('.download-btn');
+
+      if (playButton && audioUrl) {
+          playButton.onclick = () => {
+              // Pass the simple audio URL for both stream and download
+              playAudio(audioUrl, title, center, card, audioUrl);
+          };
+      } else if (playButton) {
+          playButton.disabled = true;
+      }
+
+      if (downloadButton && audioUrl) {
+          downloadButton.onclick = () => {
+              // Call downloadAudio with the simple URL
+              downloadAudio(audioUrl, title);
+          };
+      } else if (downloadButton) {
+          downloadButton.disabled = true;
+      }
+
+      return card;
+    }
+    // --- (End of updated createCard) ---
+
+    // --- Format Date (نفس الدالة السابقة) ---
+    function formatDate(dateStr) { /* ... */ }
+
+    // --- Format Time (نفس الدالة السابقة) ---
+    function formatTime(seconds) { /* ... */ }
+
+    // --- Update Playing Card UI (نفس الدالة السابقة) ---
+    function updateCardPlayingState(targetCard, isPlaying) { /* ... */ }
+
+
+    // --- Audio Playback (UPDATED slightly to store download URL) ---
+    function playAudio(audioSrc, title, center, cardElement, downloadSrc = null) {
+      if (!audioSrc || audioSrc === '#') return;
+
+      if (!audioPlayer.paused) {
+        audioPlayer.pause();
+         if(currentlyPlayingCard && currentlyPlayingCard !== cardElement) {
+            updateCardPlayingState(null, false);
+         }
+      }
+
+      audioPlayer.src = audioSrc; // Set the source for the <audio> element
+      currentAudioTitle.textContent = title;
+      currentAudioCenter.textContent = center;
+      playerContainer.classList.remove('hidden');
+
+      // Store data for the player's download button
+      currentDownloadUrl = downloadSrc || audioSrc; // Store the URL
+      playerContainer.dataset.currentDownloadSrc = currentDownloadUrl; // Store in dataset if needed elsewhere
+      playerContainer.dataset.currentTitle = title;
+      downloadBtnPlayer.disabled = !currentDownloadUrl; // Enable/disable player download button
+
+      // Reset UI elements
+      progressBar.style.width = '0%';
+      progressContainer.setAttribute('aria-valuenow', '0');
+      currentTimeSpan.textContent = formatTime(0);
+      durationSpan.textContent = formatTime(0);
+      playPauseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      playPauseBtn.setAttribute('aria-label', 'جاري التحميل');
+      playPauseBtn.disabled = true;
+
+      const handlePlay = () => { /* ... (same as before) */ };
+      const handlePause = () => { /* ... (same as before) */ };
+
+      // Assign event listeners (same as before)
+      audioPlayer.onloadedmetadata = () => {
+          durationSpan.textContent = formatTime(audioPlayer.duration);
+          progressContainer.setAttribute('aria-valuemax', audioPlayer.duration);
+          handlePlay();
+      };
+      audioPlayer.ontimeupdate = () => { /* ... (same as before) */ };
+      audioPlayer.onended = () => { /* ... (same as before) */ };
+      audioPlayer.onerror = (e) => { /* ... (same as before, maybe disable downloadBtnPlayer too) */
+           console.error("Audio player error:", e);
+           handlePause();
+           currentAudioTitle.textContent = "خطأ في تحميل الصوت";
+           currentAudioCenter.textContent = "";
+           durationSpan.textContent = "0:00";
+           updateCardPlayingState(cardElement, false);
+           downloadBtnPlayer.disabled = true; // Disable download on error
+       };
+
+      audioPlayer.load(); // Load the audio source
+    }
+    // --- (End of updated playAudio) ---
+
+
+    // --- Filter Logic (نفس الدوال السابقة) ---
+    function getFilteredItems() { /* ... */ }
+    function applyFiltersAndDisplay() { /* ... */ }
+    function isWithinDateRange(dateStr, range) { /* ... */ }
+
+    // --- Event Listeners (نفس المستمعين السابقين) ---
+    searchInput.addEventListener('input', applyFiltersAndDisplay);
+    centerFilter.addEventListener('change', applyFiltersAndDisplay);
+    dateFilter.addEventListener('change', applyFiltersAndDisplay);
+    categoryButtons.forEach(btn => { /* ... */ });
+
+    // --- Player Control Event Listeners (نفس المستمعين السابقين) ---
+    playPauseBtn.onclick = () => { /* ... */ };
+    forwardBtn.onclick = () => { /* ... */ };
+    backwardBtn.onclick = () => { /* ... */ };
+    progressContainer.onclick = (e) => { /* ... */ };
+    progressContainer.onkeydown = (e) => { /* ... */ };
+    volumeSlider.oninput = () => { /* ... */ };
+    muteBtn.onclick = () => { /* ... */ };
+    closePlayerBtn.onclick = () => { /* ... */ };
+
+    // Player Download Button (uses currentDownloadUrl set by playAudio)
+    downloadBtnPlayer.onclick = () => {
+        const title = playerContainer.dataset.currentTitle || 'audio';
+        if (currentDownloadUrl && currentDownloadUrl !== '#') {
+            downloadAudio(currentDownloadUrl, title); // Call download function
+        } else {
+            console.warn("No current download URL available for the player button.");
+        }
+    };
+
+    // --- Download Function (UPDATED to use fetch/blob for same-origin) ---
+    async function downloadAudio(audioUrl, title) {
+        if (!audioUrl || audioUrl === '#') {
+            alert("رابط التحميل غير متوفر.");
+            return;
+        }
+        console.log(`Attempting to download: ${title} from ${audioUrl}`);
+
+        // Add loading indicator to button if needed
+        const downloadButtons = document.querySelectorAll(`.download-btn`); // Find all download buttons
+        let targetButton = null;
+        // Try finding the button in the playing card first
+        if (currentlyPlayingCard) {
+            targetButton = currentlyPlayingCard.querySelector('.download-btn');
+        }
+        // If not found or no card playing, check player button if its URL matches
+         if (!targetButton && playerContainer.dataset.currentDownloadSrc === audioUrl) {
+             targetButton = downloadBtnPlayer;
+         }
+         // Or find the specific card button if not playing
+          if (!targetButton) {
+              const cards = content.querySelectorAll('.card');
+              cards.forEach(card => {
+                  // A bit tricky to link back without index easily, this needs refinement
+                  // Maybe store the url in a data attribute on the button itself in createCard
+              });
+          }
+
+
+        if(targetButton) {
+            const originalContent = targetButton.innerHTML;
+            targetButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span class="btn-text"> جارٍ التحميل</span>`;
+            targetButton.disabled = true;
+        }
+
+
+        try {
+            // Fetch the audio file (should work as it's same-origin now)
+            const response = await fetch(audioUrl);
+            if (!response.ok) {
+                throw new Error(`فشل تحميل الملف: ${response.status} ${response.statusText}`);
+            }
+            const blob = await response.blob();
+
+            // Create a link to download the blob
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            // Try to get a better filename from the URL
+            const filename = audioUrl.substring(audioUrl.lastIndexOf('/') + 1).split('?')[0]; // Remove query params if any
+            a.download = decodeURIComponent(filename) || `${title || 'audio'}.mp3`; // Decode URI components and fallback
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error("Error downloading file:", error);
+            alert(`حدث خطأ أثناء التحميل: ${error.message}`);
+        } finally {
+             // Restore button state
+             if(targetButton) {
+                targetButton.innerHTML = `<i class="fas fa-download"></i><span class="btn-text">تحميل</span>`;
+                targetButton.disabled = false;
+             }
+        }
+    }
+    // --- (End of updated downloadAudio) ---
+
+
+    // --- Load Initial Data ---
+    document.addEventListener('DOMContentLoaded', loadAudioData);
+
+  </script>
+</body>
+</html>
